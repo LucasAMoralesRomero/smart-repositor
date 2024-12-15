@@ -1,8 +1,8 @@
 document.getElementById('agregarProducto').addEventListener('click', async () => {
-    const plu = document.getElementById('pluInput').value;
-    const quantity = document.getElementById('cantidad').value;
+    const plu = document.getElementById('pluInput').value.trim(); // Limpieza de espacios en blanco
+    const quantity = parseInt(document.getElementById('cantidad').value, 10); // Asegurar que sea un número entero
 
-    if (!plu || !quantity || quantity <= 0) {
+    if (!plu || isNaN(quantity) || quantity <= 0) {
         alert("Por favor ingrese un PLU válido y una cantidad mayor a 0.");
         return;
     }
@@ -29,6 +29,10 @@ document.getElementById('agregarProducto').addEventListener('click', async () =>
 
             // Agregar el producto al DOM
             addProductToList(repositoryId, productName, imageUrl, quantity);
+
+            // Limpiar los campos solo si el producto fue agregado correctamente
+            document.getElementById('pluInput').value = '';
+            document.getElementById('cantidad').value = '';
         } else {
             alert("Producto no encontrado.");
         }
