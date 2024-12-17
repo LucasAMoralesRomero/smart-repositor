@@ -1,11 +1,14 @@
 document.getElementById('agregarProducto').addEventListener('click', async () => {
-    const plu = document.getElementById('pluInput').value.trim(); // Limpieza de espacios en blanco
-    const quantity = parseInt(document.getElementById('cantidad').value, 10); // Asegurar que sea un número entero
+    const pluInput = document.getElementById('pluInput').value.trim();
+    const quantity = parseInt(document.getElementById('cantidad').value, 10);
 
-    if (!plu || isNaN(quantity) || quantity <= 0) {
+    if (!pluInput || isNaN(quantity) || quantity <= 0) {
         alert("Por favor ingrese un PLU válido y una cantidad mayor a 0.");
         return;
     }
+
+    // Asegurar que el PLU tenga 6 dígitos
+    const plu = pluInput.padStart(6, '0'); // Completar con ceros al inicio si tiene menos de 6 dígitos
 
     const url = `https://api.cotodigital.com.ar/sitios/cdigi/categoria?_dyncharset=utf-8&Dy=1&Ntt=sku00${plu}&format=json`;
 
@@ -18,19 +21,23 @@ document.getElementById('agregarProducto').addEventListener('click', async () =>
 
         const data = await response.json();
 
-        // Accedemos a los datos del producto
-        const product = data.contents[0]?.Main[2]?.contents[0]?.records?.[0]?.records?.[0];
+        const records = data.contents?.[0]?.Main?.[1]?.contents?.[0]?.records;
+        const product = records?.[0]?.attributes;
 
         if (product) {
-            const imageUrl = product.attributes["product.mediumImage.url"]?.[0];
-            const productName = product.attributes["sku.displayName"]?.[0];
-            const rawRepositoryId = product.attributes["product.repositoryId"]?.[0];
-            const repositoryId = rawRepositoryId?.slice(-6); // Toma los últimos 6 caracteres del repositoryId
+            // Generar URL dinámica de la imagen
+            const fullPLU = `00${plu}`; // Agregar prefijo 00 al PLU completo
+            const folder = fullPLU.slice(0, 6) + "00"; // Carpeta: primeros 6 dígitos + '00'
+            const imageUrl = `https://static.cotodigital3.com.ar/sitios/fotos/medium/${folder}/${fullPLU}.jpg`;
 
-            // Agregar el producto al DOM
+            const productName = product["product.displayName"]?.[0] || 'Nombre no disponible';
+            const repositoryId = product["product.repositoryId"]?.[0]?.slice(-6) || plu;
+
+            console.log("PLU formateado:", plu);
+            console.log("URL de imagen generada:", imageUrl);
+
             addProductToList(repositoryId, productName, imageUrl, quantity);
 
-            // Limpiar los campos solo si el producto fue agregado correctamente
             document.getElementById('pluInput').value = '';
             document.getElementById('cantidad').value = '';
         } else {
@@ -45,21 +52,18 @@ document.getElementById('agregarProducto').addEventListener('click', async () =>
 function addProductToList(repositoryId, productName, imageUrl, quantity) {
     const productList = document.getElementById('lista');
 
-    // Crear el card del producto usando clases de Bootstrap
     const productDiv = document.createElement('div');
     productDiv.classList.add('card', 'mb-3', 'shadow-sm');
 
     const productBody = document.createElement('div');
     productBody.classList.add('card-body', 'd-flex', 'align-items-center');
 
-    // Imagen del producto
     const img = document.createElement('img');
     img.src = imageUrl;
     img.alt = productName;
     img.classList.add('img-thumbnail', 'me-3');
     img.style.maxWidth = "100px";
 
-    // Información del producto
     const productInfo = document.createElement('div');
     productInfo.classList.add('product-info', 'flex-grow-1');
     productInfo.innerHTML = `
@@ -68,7 +72,6 @@ function addProductToList(repositoryId, productName, imageUrl, quantity) {
         <p class="mb-1"><strong>Cantidad:</strong> ${quantity}</p>
     `;
 
-    // Botón para marcar como conseguido
     const checkButton = document.createElement('button');
     checkButton.textContent = "✔ Conseguido";
     checkButton.classList.add('btn', 'btn-success', 'ms-auto');
@@ -79,13 +82,11 @@ function addProductToList(repositoryId, productName, imageUrl, quantity) {
         checkButton.textContent = "Conseguido";
     };
 
-    // Ensamblar la card
     productBody.appendChild(img);
     productBody.appendChild(productInfo);
     productBody.appendChild(checkButton);
 
     productDiv.appendChild(productBody);
 
-    // Agregar el producto a la lista
     productList.appendChild(productDiv);
 }
