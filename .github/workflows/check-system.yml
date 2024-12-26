@@ -40,11 +40,14 @@ jobs:
 
       # Paso 6: Subir el archivo status.json a la rama gh-pages
       - name: Push Status to gh-pages
+        env:
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
             git config --local user.name "GitHub Actions"
             git config --local user.email "actions@github.com"
             git checkout -b gh-pages || git checkout gh-pages
             git add status.json
             git commit -m "Actualización de estado del sistema" || echo "No hay cambios para commitear."
-            git push origin gh-pages --force
+            git push https://x-access-token:${GITHUB_TOKEN}@github.com/${{ github.repository }} gh-pages --force
+        
 
