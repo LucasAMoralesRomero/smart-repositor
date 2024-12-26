@@ -31,6 +31,7 @@ jobs:
 
       # Paso 5: Actualizar archivo status.json
       - name: Update Status JSON
+        if: always()
         run: |
           if [ $? -eq 0 ]; then
             echo '{"schemaVersion": 1, "label": "Estado del servicio", "message": "Online", "color": "brightgreen"}' > status.json
@@ -40,6 +41,7 @@ jobs:
 
       # Paso 6: Subir el archivo status.json a la rama gh-pages
       - name: Push Status to gh-pages
+        if: always()
         env:
             GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
