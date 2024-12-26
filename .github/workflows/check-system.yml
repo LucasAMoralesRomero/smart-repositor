@@ -33,9 +33,9 @@ jobs:
       - name: Update Status JSON
         run: |
           if [ $? -eq 0 ]; then
-            echo '{"service": "online", "products": "en linea"}' > status.json
+            echo '{"schemaVersion": 1, "label": "Estado del servicio", "message": "Online", "color": "brightgreen"}' > status.json
           else
-            echo '{"service": "offline", "products": "no funciona"}' > status.json
+            echo '{"schemaVersion": 1, "label": "Estado del servicio", "message": "Offline", "color": "red"}' > status.json
           fi
 
       # Paso 6: Subir el archivo status.json a la rama gh-pages
