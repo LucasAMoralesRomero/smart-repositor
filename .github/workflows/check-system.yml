@@ -1,1 +1,27 @@
+name: Test Smart Repositor
 
+on: 
+   schedule:
+    #Ejecutar cada 30 minutos
+      -cron: '*/30 * * * *'
+    workflow_dispatch:
+jobs: 
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      #1 clonamos el repositorio
+      -uses: actions/checkout@v3 
+      #2 configutramos node y playwright
+      -uses: actions/setup-node@v3
+       with: node-version: '16'
+      -run: npm install playwright 
+      #3 instalamos el entorno grafico virtual (xvfb)
+      -name: Set up Xvfb
+      run: sudo apt-get install -y xvfb 
+      #4 ejecutamos la prueba en el entorno grafico virtual
+      -name: Run test Playwright
+      run: |
+        xvfb-run -a npx playwright install
+        xvfb-run -a node tests/test-web.js
+      #5 actualizamos el archivo JSON

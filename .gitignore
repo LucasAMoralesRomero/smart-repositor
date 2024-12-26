@@ -1,0 +1,40 @@
+# Ignorar la carpeta node_modules
+node_modules/
+
+# Ignorar la carpeta de resultados de pruebas Playwright
+playwright-report/
+
+# Ignorar archivos temporales del sistema operativo
+.DS_Store
+Thumbs.db
+
+# Ignorar logs y archivos temporales de npm
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Ignorar configuraciones locales y caches
+.env
+.env.local
+.env.*.local
+.cache/
+.vscode/
+
+# Ignorar archivos de lock específicos (si usás yarn)
+.pnpm-debug.log
+.yarn/
+.yarn-cache/
+.yarnrc.yml
+
+# Ignorar archivos de configuración específicos de Playwright
+*.lock
+.trace
+.screenshots/
+
+# Ignorar posibles archivos de salida generados
+dist/
+build/
+
+# Ignorar dependencias instaladas globalmente en Playwright
+**/node_modules/.cache/
+**/node_modules/.bin/
