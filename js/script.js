@@ -48,6 +48,7 @@ document.getElementById('agregarProducto').addEventListener('click', async () =>
         const folder = fullPLU.slice(0, 6) + "00"; // Carpeta: primeros 6 dígitos + '00'
         const imageUrl = `https://static.cotodigital3.com.ar/sitios/fotos/medium/${folder}/${fullPLU}.jpg`;
 
+        
         addProductToList(repositoryId, productName, imageUrl, quantity); // Aquí usamos "quantity".
     })
     .catch(error => {
@@ -70,12 +71,14 @@ img.src = imageUrl;
 img.alt = productName;
 img.classList.add('img-thumbnail', 'me-3');
 img.style.maxWidth = "100px";
+// Procesar el PLU: eliminar "prod" y ceros iniciales
+const cleanedPLU = repositoryId.replace(/^prod0*/, ''); // Quita "prod" y los ceros iniciales.
 
 const productInfo = document.createElement('div');
 productInfo.classList.add('product-info', 'flex-grow-1');
 productInfo.innerHTML = `
     <p class="mb-1"><strong>Nombre:</strong> ${productName}</p>
-    <p class="mb-1"><strong>PLU:</strong> ${repositoryId}</p>
+    <p class="mb-1"><strong>PLU:</strong> ${cleanedPLU}</p>
     <p class="mb-1"><strong>Cantidad:</strong> ${quantity}</p>
 `;
 
