@@ -1,1 +1,50 @@
+name: Test Smart Repositor
 
+on:
+  schedule:
+    - cron: '*/30 * * * *' # Ejecutar cada 30 minutos
+  workflow_dispatch: # Permitir ejecución manual
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Paso 1: Clonar el repositorio
+      - uses: actions/checkout@v3
+
+      # Paso 2: Configurar Node.js y Playwright
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '16'
+      - run: npm install playwright
+
+      # Paso 3: Instalar Xvfb para entorno gráfico virtual
+      - name: Set up Xvfb
+        run: sudo apt-get install -y xvfb
+
+      # Paso 4: Ejecutar pruebas con Playwright
+      - name: Run tests with Playwright
+        run: |
+          xvfb-run -a npx playwright install
+          xvfb-run -a node tests/test-web.js
+
+      # Paso 5: Actualizar archivo status.json
+      - name: Update Status JSON
+        run: |
+          if [ $? -eq 0 ]; then
+            echo '{"service": "online", "products": "en linea"}' > status.json
+          else
+            echo '{"service": "offline", "products": "no funciona"}' > status.json
+          fi
+
+      # Paso 6: Subir el archivo status.json a la rama gh-pages
+      - name: Push Status to gh-pages
+        run: |
+          git config --local user.name "GitHub Actions"
+          git config --local user.email "actions@github.com"
+          git checkout -b gh-pages || git checkout gh-pages
+          mv status.json ./ # Mover el archivo al nivel raíz
+          git add status.json
+          git commit -m "Actualización de estado del sistema"
+          git push origin gh-pages --force
