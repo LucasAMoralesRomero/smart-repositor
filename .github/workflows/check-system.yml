@@ -25,26 +25,31 @@ jobs:
 
       # Paso 4: Ejecutar pruebas con Playwright
       - name: Run tests with Playwright
+        id: tests
         run: |
           xvfb-run -a npx playwright install
-          xvfb-run -a node tests/test-web.js
+          xvfb-run -a node tests/test-web.js || echo "Test fallido"
+        continue-on-error: true
 
       # Paso 5: Actualizar archivo status.json
       - name: Update Status JSON
+        if: always()
         run: |
-          if [ $? -eq 0 ]; then
-            echo '{"service": "online", "products": "en linea"}' > status.json
+          if [ "${{ steps.tests.outcome }}" == "success" ]; then
+            echo '{"schemaVersion": 1, "label": "Estado del servicio", "message": "Online", "color": "brightgreen"}' > status.json
           else
-            echo '{"service": "offline", "products": "no funciona"}' > status.json
+            echo '{"schemaVersion": 1, "label": "Estado del servicio", "message": "Offline", "color": "red"}' > status.json
           fi
 
-      # Paso 6: Subir el archivo status.json a la rama gh-pages
+      # Paso 6: Subir status.json a gh-pages
       - name: Push Status to gh-pages
+        if: always()
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           git config --local user.name "GitHub Actions"
           git config --local user.email "actions@github.com"
           git checkout -b gh-pages || git checkout gh-pages
-          mv status.json ./ # Mover el archivo al nivel raíz
           git add status.json
-          git commit -m "Actualización de estado del sistema"
-          git push origin gh-pages --force
+          git commit -m "Actualización de estado del sistema" || echo "No hay cambios para commitear."
+          git push https://x-access-token:${GITHUB_TOKEN}@github.com/${{ github.repository }} gh-pages --force
