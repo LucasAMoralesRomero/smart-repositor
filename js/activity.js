@@ -3,7 +3,8 @@ document.getElementById("showProgress").addEventListener("click", function() {
   const tasks = [
     "27/12 - Se detecta falla en el sistema, se pone el mismo en modo mantenimiento 👷‍♂️",
     "28/12 - Comienza el trabajo en el  servidor (smart-repositor-server) 🛠️",
-    "29/12 - Comienzan las pruebas del servidor en entornos controlados 🧪"];
+    "29/12 - Comienzan las pruebas del servidor en entornos controlados 🧪",
+    "01/01 - Se agrega persistencia mediante DDBB a la información de plu, descripción e imagen 📘"];
 
   // Limpiar la lista si ya fue cargada
   progressList.innerHTML = "";
