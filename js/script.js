@@ -7,9 +7,9 @@ document.getElementById('agregarProducto').addEventListener('click', async () =>
         return;
     }
 
-    // Generar la URL para el servidor
-    const plu = pluInput.padStart(6, '0'); // Asegurar que el PLU tenga 6 dígitos
-    const url = `https://smart-repositor-server.vercel.app/product/${plu}`;
+    // Nos aseguramos que el PLU tenga 6 dígitos
+    const plu = pluInput.padStart(6, '0'); // Completar con ceros al inicio si tiene menos de 6 dígitos
+    const url = `https://smart-repositor-server.vercel.app/product/${plu}`; //llamamos al server
 
     try {
         const response = await fetch(url);
@@ -18,22 +18,24 @@ document.getElementById('agregarProducto').addEventListener('click', async () =>
             throw new Error(`Error en la solicitud: ${response.status}`);
         }
 
-        const product = await response.json();
+        const data = await response.json();
 
-        if (!product.valid) {
-            alert("Producto no encontrado en el servidor.");
+        // Verificar si la respuesta es válida
+        if (!data.valid) {
+            alert("El producto no fue encontrado en el servidor.");
             return;
         }
 
-        // Agregar el producto a la lista
-        addProductToList(product.plu, product.description, product.image, quantity);
+        const { plu: repositoryId, description: productName, image: imageUrl } = data;
+
+        addProductToList(repositoryId, productName, imageUrl, quantity);
     } catch (error) {
-        console.error('Error al procesar la solicitud:', error);
-        alert('Hubo un error al buscar el producto.');
+        console.error("Error al procesar la solicitud:", error);
+        alert("Hubo un error al buscar el producto.");
     }
 });
 
-function addProductToList(plu, productName, imageUrl, quantity) {
+function addProductToList(repositoryId, productName, imageUrl, quantity) {
     const productList = document.getElementById('lista');
 
     const productDiv = document.createElement('div');
@@ -48,11 +50,14 @@ function addProductToList(plu, productName, imageUrl, quantity) {
     img.classList.add('img-thumbnail', 'me-3');
     img.style.maxWidth = "100px";
 
+    // Procesar el PLU para mostrarlo correctamente
+    const cleanedPLU = repositoryId.replace(/^sku0*/, ''); // Quita "sku" y ceros iniciales.
+
     const productInfo = document.createElement('div');
     productInfo.classList.add('product-info', 'flex-grow-1');
     productInfo.innerHTML = `
         <p class="mb-1"><strong>Nombre:</strong> ${productName}</p>
-        <p class="mb-1"><strong>PLU:</strong> ${plu}</p>
+        <p class="mb-1"><strong>PLU:</strong> ${cleanedPLU}</p>
         <p class="mb-1"><strong>Cantidad:</strong> ${quantity}</p>
     `;
 
