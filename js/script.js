@@ -42,7 +42,7 @@ function addProductToList(repositoryId, productName, imageUrl, quantity) {
     productDiv.classList.add('card', 'mb-3', 'shadow-sm');
 
     const productBody = document.createElement('div');
-    productBody.classList.add('card-body', 'd-flex', 'align-items-center');
+    productBody.classList.add('card-body', 'd-flex', 'align-items-center', 'flex-wrap');
 
     const img = document.createElement('img');
     img.src = imageUrl;
@@ -51,7 +51,7 @@ function addProductToList(repositoryId, productName, imageUrl, quantity) {
     img.style.maxWidth = "100px";
 
     // Procesar el PLU para mostrarlo correctamente
-    const cleanedPLU = repositoryId.replace(/^sku0*/, ''); // Quita "sku" y ceros iniciales.
+    const cleanedPLU = repositoryId.replace(/^sku0*/, ''); // Quita "sku" y ceros iniciales si existen.
 
     const productInfo = document.createElement('div');
     productInfo.classList.add('product-info', 'flex-grow-1');
@@ -60,35 +60,40 @@ function addProductToList(repositoryId, productName, imageUrl, quantity) {
         <p class="mb-1"><strong>PLU:</strong> ${cleanedPLU}</p>
         <p class="mb-1"><strong>Cantidad:</strong> ${quantity}</p>
     `;
-const checkButton = document.createElement('button');
-checkButton.textContent = "✔ Conseguido";
-checkButton.classList.add('btn', 'btn-success', 'ms-auto');
-checkButton.onclick = () => {
-    productDiv.classList.add('border-success');
-    productDiv.style.backgroundColor = "#d4edda";
-    checkButton.disabled = true;
-    checkNoDisponible.disabled = true; // Desactiva el otro botón
-    checkButton.textContent = "Conseguido";
-};
 
-// Se agrega el botón de "No conseguido"
-const checkNoDisponible = document.createElement('button');
-checkNoDisponible.textContent = "❌ No conseguido";
-checkNoDisponible.classList.add('btn', 'btn-danger', 'ms-2');
-checkNoDisponible.onclick = () => {
-    productDiv.classList.add('border-danger');
-    productDiv.style.backgroundColor = "#f8d7da";
-    checkNoDisponible.disabled = true;
-    checkButton.disabled = true; // Desactiva el otro botón
-    checkNoDisponible.textContent = "No conseguido";
-};
+    // Contenedor para los botones
+    const buttonContainer = document.createElement('div');
+    buttonContainer.classList.add('d-flex', 'justify-content-between', 'w-100', 'mt-2');
+
+    const checkButton = document.createElement('button');
+    checkButton.textContent = "✔ Conseguido";
+    checkButton.classList.add('btn', 'btn-success', 'flex-grow-1', 'me-2');
+    checkButton.onclick = () => {
+        productDiv.classList.add('border-success');
+        productDiv.style.backgroundColor = "#d4edda";
+        checkButton.disabled = true;
+        checkNoDisponible.disabled = true;
+        checkButton.textContent = "Conseguido";
+    };
+//se agrega boton de no disponible
+    const checkNoDisponible = document.createElement('button');
+    checkNoDisponible.textContent = "❌ No conseguido";
+    checkNoDisponible.classList.add('btn', 'btn-danger', 'flex-grow-1');
+    checkNoDisponible.onclick = () => {
+        productDiv.classList.add('border-danger');
+        productDiv.style.backgroundColor = "#f8d7da";
+        checkNoDisponible.disabled = true;
+        checkButton.disabled = true;
+        checkNoDisponible.textContent = "No conseguido";
+    };
+
+    buttonContainer.appendChild(checkButton);
+    buttonContainer.appendChild(checkNoDisponible);
 
     productBody.appendChild(img);
     productBody.appendChild(productInfo);
-    productBody.appendChild(checkButton);
-    productBody.appendChild(checkNoDisponible);
+    productBody.appendChild(buttonContainer);
 
     productDiv.appendChild(productBody);
-
     productList.appendChild(productDiv);
 }
