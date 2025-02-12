@@ -65,15 +65,16 @@ function addProductToList(repositoryId, productName, imageUrl, quantity) {
     const buttonContainer = document.createElement('div');
     buttonContainer.classList.add('d-flex', 'justify-content-between', 'w-100', 'mt-2');
 
+    
     const checkButton = document.createElement('button');
     checkButton.textContent = "✔ Conseguido";
     checkButton.classList.add('btn', 'btn-success', 'flex-grow-1', 'me-2');
     checkButton.onclick = () => {
-        productDiv.classList.add('border-success');
-        productDiv.style.backgroundColor = "#d4edda";
-        checkButton.disabled = true;
-        checkNoDisponible.disabled = true;
-        checkButton.textContent = "Conseguido";
+        productDiv.style.transition = "opacity 0.5s ease-out";
+        productDiv.style.opacity = "0";
+        setTimeout(() => {
+            productDiv.remove(); // Se elimina después del fade
+        }, 500);
     };
 //se agrega boton de no disponible
     const checkNoDisponible = document.createElement('button');
