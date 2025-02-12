@@ -60,26 +60,28 @@ function addProductToList(repositoryId, productName, imageUrl, quantity) {
         <p class="mb-1"><strong>PLU:</strong> ${cleanedPLU}</p>
         <p class="mb-1"><strong>Cantidad:</strong> ${quantity}</p>
     `;
+const checkButton = document.createElement('button');
+checkButton.textContent = "✔ Conseguido";
+checkButton.classList.add('btn', 'btn-success', 'ms-auto');
+checkButton.onclick = () => {
+    productDiv.classList.add('border-success');
+    productDiv.style.backgroundColor = "#d4edda";
+    checkButton.disabled = true;
+    checkNoDisponible.disabled = true; // Desactiva el otro botón
+    checkButton.textContent = "Conseguido";
+};
 
-    const checkButton = document.createElement('button');
-    checkButton.textContent = "✔ Conseguido";
-    checkButton.classList.add('btn', 'btn-success', 'ms-auto');
-    checkButton.onclick = () => {
-        productDiv.classList.add('border-success');
-        productDiv.style.backgroundColor = "#d4edda";
-        checkButton.disabled = true;
-        checkButton.textContent = "Conseguido";
-    };
-  // Se agrega el botón de "No conseguido"
-    const checkNoDisponible = document.createElement('button');
-    checkNoDisponible.textContent = "❌ No conseguido";
-    checkNoDisponible.classList.add('btn', 'btn-danger', 'ms-2');
-    checkNoDisponible.onclick = () => {
-        productDiv.classList.add('border-danger');
-        productDiv.style.backgroundColor = "#f8d7da";
-        checkNoDisponible.disabled = true;
-        checkNoDisponible.textContent = "No conseguido";
-    };
+// Se agrega el botón de "No conseguido"
+const checkNoDisponible = document.createElement('button');
+checkNoDisponible.textContent = "❌ No conseguido";
+checkNoDisponible.classList.add('btn', 'btn-danger', 'ms-2');
+checkNoDisponible.onclick = () => {
+    productDiv.classList.add('border-danger');
+    productDiv.style.backgroundColor = "#f8d7da";
+    checkNoDisponible.disabled = true;
+    checkButton.disabled = true; // Desactiva el otro botón
+    checkNoDisponible.textContent = "No conseguido";
+};
 
     productBody.appendChild(img);
     productBody.appendChild(productInfo);
