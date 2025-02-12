@@ -70,17 +70,16 @@ function addProductToList(repositoryId, productName, imageUrl, quantity) {
         checkButton.disabled = true;
         checkButton.textContent = "Conseguido";
     };
-//Se agrega el boton de no conseguido
+  // Se agrega el botón de "No conseguido"
     const checkNoDisponible = document.createElement('button');
-    checkButton.textContent = "❌️ No conseguido";
-    checkButton.classList.add('btn', 'btn-danger', 'ms-auto');
-    checkButton.onclick = () => {
-        productDiv.classList.add('border-unsuccess');
-        productDiv.style.backgroundColor = "red";
-        checkButton.disabled = true;
-        checkButton.textContent = "No conseguido";
+    checkNoDisponible.textContent = "❌ No conseguido";
+    checkNoDisponible.classList.add('btn', 'btn-danger', 'ms-2');
+    checkNoDisponible.onclick = () => {
+        productDiv.classList.add('border-danger');
+        productDiv.style.backgroundColor = "#f8d7da";
+        checkNoDisponible.disabled = true;
+        checkNoDisponible.textContent = "No conseguido";
     };
-
 
     productBody.appendChild(img);
     productBody.appendChild(productInfo);
