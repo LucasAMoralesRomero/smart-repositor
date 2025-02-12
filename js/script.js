@@ -70,10 +70,22 @@ function addProductToList(repositoryId, productName, imageUrl, quantity) {
         checkButton.disabled = true;
         checkButton.textContent = "Conseguido";
     };
+//Se agrega el boton de no conseguido
+    const checkNoDisponible = document.createElement('button');
+    checkButton.textContent = "❌️ No conseguido";
+    checkButton.classList.add('btn', 'btn-danger', 'ms-auto');
+    checkButton.onclick = () => {
+        productDiv.classList.add('border-unsuccess');
+        productDiv.style.backgroundColor = "red";
+        checkButton.disabled = true;
+        checkButton.textContent = "No conseguido";
+    };
+
 
     productBody.appendChild(img);
     productBody.appendChild(productInfo);
     productBody.appendChild(checkButton);
+    productBody.appendChild(checkNoDisponible);
 
     productDiv.appendChild(productBody);
 
