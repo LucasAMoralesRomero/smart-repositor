@@ -110,7 +110,7 @@ function addProductToList(repositoryId, productName, imageUrl, quantity) {
 
     buttonContainer.appendChild(checkButton);
 
-buttonCOntainer.appendChild(checkPartial);
+buttonContainer.appendChild(checkPartial);
   buttonContainer.appendChild(checkNoDisponible);
 
     productBody.appendChild(img);
