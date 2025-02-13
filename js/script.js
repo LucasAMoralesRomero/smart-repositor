@@ -67,7 +67,7 @@ function addProductToList(repositoryId, productName, imageUrl, quantity) {
 
     
     const checkButton = document.createElement('button');
-    checkButton.textContent = "✔ Conseguido";
+    checkButton.textContent = "✅️ Conseguido";
     checkButton.classList.add('btn', 'btn-success', 'flex-grow-1', 'me-2');
     checkButton.onclick = () => {
         productDiv.style.transition = "opacity 0.5s ease-out";
@@ -76,6 +76,26 @@ function addProductToList(repositoryId, productName, imageUrl, quantity) {
             productDiv.remove(); // Se elimina después del fade
         }, 500);
     };
+
+    const checkPartial = document.createElement('button');
+    checkPartial.textContent = "⚠️ Parcial";
+    checkPartial.classList.add('btn', 'btn-warning', 'flex-grow-1', 'me-2');
+    checkPartial.onclick = () => {
+        const cantidadIngresada = prompt(`¿Cuántas unidades conseguiste? (Máximo: ${quantity})`);
+        const cantidadParcial = parseInt(cantidadIngresada, 10);
+
+        if (!isNaN(cantidadParcial) && cantidadParcial > 0 && cantidadParcial < quantity) {
+            document.getElementById(`cantidad-conseguida-${repositoryId}`).textContent = cantidadParcial;
+            productDiv.classList.add('border-warning');
+            productDiv.style.backgroundColor = "#fff3cd"; // Amarillo para estado parcial
+            checkButton.disabled = true;
+            checkNoDisponible.disabled = true;
+            checkPartial.disabled = true;
+        } else {
+            alert("Ingrese una cantidad válida menor a la buscada.");
+        }
+    };
+
 //se agrega boton de no disponible
     const checkNoDisponible = document.createElement('button');
     checkNoDisponible.textContent = "❌ No conseguido";
@@ -89,7 +109,9 @@ function addProductToList(repositoryId, productName, imageUrl, quantity) {
     };
 
     buttonContainer.appendChild(checkButton);
-    buttonContainer.appendChild(checkNoDisponible);
+
+buttonCOntainer.appendChild(checkPartial);
+  buttonContainer.appendChild(checkNoDisponible);
 
     productBody.appendChild(img);
     productBody.appendChild(productInfo);
