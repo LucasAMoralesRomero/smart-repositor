@@ -83,7 +83,7 @@ function addProductToList(repositoryId, productName, imageUrl, quantity) {
         if (!isNaN(cantidadParcial) && cantidadParcial > 0 && cantidadParcial <= quantity) {
             // Actualizar dinámicamente el campo de cantidad conseguida
             const cantidadConseguidaElemento = document.getElementById(`cantidad-conseguida-${repositoryId}`);
-            cantidadConseguidaElemento.textContent = `<strong>Cantidad conseguida: ${cantidadParcial}</strong>`;
+            cantidadConseguidaElemento.textContent = `Cantidad conseguida: ${cantidadParcial}`;
 
             productDiv.classList.add('border-warning');
             productDiv.style.backgroundColor = "#fff3cd"; // Amarillo para estado parcial
