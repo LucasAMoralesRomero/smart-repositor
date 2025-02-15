@@ -4,7 +4,7 @@ if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
     navigator.serviceWorker.register('/service-worker.js')
       .then((registration) => {
-        console.log('Service Worker registrado:', registration);
+        console.log('[SW] Registrado correctamente:', registration);
 
         // Verificar actualizaciones periódicamente
         setInterval(() => {
@@ -18,8 +18,8 @@ if ('serviceWorker' in navigator) {
             installingWorker.onstatechange = () => {
               if (installingWorker.state === 'installed') {
                 if (navigator.serviceWorker.controller) {
-                  // Nueva versión disponible
-                  showUpdateNotification();
+                  // Nueva versión disponible, preguntar al usuario
+                  showUpdateNotification(registration);
                 }
               }
             };
@@ -27,17 +27,26 @@ if ('serviceWorker' in navigator) {
         };
       })
       .catch((error) => {
-        console.error('Error al registrar el Service Worker:', error);
+        console.error('[SW] Error al registrar:', error);
       });
   });
 }
 
-// Mostrar aviso al usuario para actualizar
-function showUpdateNotification() {
+// Mostrar aviso de nueva versión
+function showUpdateNotification(registration) {
   const userConfirmed = confirm(
     'Nueva versión disponible. ¿Quieres actualizar ahora?'
   );
   if (userConfirmed) {
+    // Enviar mensaje al SW para saltar la espera
+    if (registration.waiting) {
+      registration.waiting.postMessage('SKIP_WAITING');
+    }
     window.location.reload();
   }
+}
+
+// Actualiza automáticamente cuando se instala una nueva versión
+if (navigator.serviceWorker && navigator.serviceWorker.controller) {
+  navigator.serviceWorker.controller.postMessage('SKIP_WAITING');
 }
