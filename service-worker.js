@@ -2,15 +2,17 @@
 
 const CACHE_NAME = 'smart-repositor-v2';
 const urlsToCache = [
-  '/',
-  '/index.html',
-  '/manifest.json',
-  '/js/script.js',
-  '/js/version.js',
-  '/js/registerSW.js',
-  '/icons/smart-repositor-32-32.png',
-  '/icons/smart-repositor-128-128.png',
-  '/icons/smart-repositor-512-512.png',
+  './',
+  './index.html',
+  './manifest.json',
+  './js/script.js',
+  './js/version.js',
+  './js/registerSW.js',
+  './icons/smart-repositor-32-32.png',
+  './icons/smart-repositor-128-128.png',
+  './icons/smart-repositor-512-512.png',
+  'https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css',
+  'https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js'
 ];
 
 //1. Instalación: Cachear archivos
@@ -43,13 +45,24 @@ self.addEventListener('activate', (event) => {
   self.clients.claim(); // Aplica el SW inmediatamente
 });
 
-//3. Intercepción de peticiones: Servir desde caché
+//3. Intercepción de peticiones: Offline Fallback
 self.addEventListener('fetch', (event) => {
   event.respondWith(
     caches.match(event.request).then((response) => {
-      return response || fetch(event.request);
-    }).catch(() => {
-      return new Response('Sin conexión y recurso no encontrado en caché.');
+      // Si está en caché, devuelve desde allí
+      if (response) {
+        return response;
+      }
+
+      // Si es una solicitud de página y no hay red, muestra el index.html
+      if (event.request.mode === 'navigate') {
+        return caches.match('./index.html');
+      }
+
+      // Si no está en caché y es otro recurso, intenta desde la red
+      return fetch(event.request).catch(() => {
+        return new Response('Sin conexión y recurso no encontrado en caché.');
+      });
     })
   );
 });
