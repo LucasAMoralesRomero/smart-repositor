@@ -1,4 +1,1 @@
-{
-  "service": "unknown",
-  "products":"unknown"
-}
+{"schemaVersion": 1, "label": "Estado del servicio", "message": "Online", "color": "brightgreen"}
