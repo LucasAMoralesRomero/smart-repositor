@@ -81,7 +81,7 @@ function addProductToList(repositoryId, productName, imageUrl, quantity) {
         
         // Guardamos la nueva cantidad en el data-attribute y actualizamos el texto
         totalQuantityElem.dataset.currentTotal = newTotal;
-        totalQuantityElem.textContent = `Cantidad total: ${newTotal}`;
+        totalQuantityElem.innerHTML = `<strong>Cantidad total:</strong> ${newTotal}`;
 
         // Retornamos para no crear una nueva tarjeta
         return;
