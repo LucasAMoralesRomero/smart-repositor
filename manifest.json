@@ -1,7 +1,7 @@
 {
     "name": "Smart Repositor",
     "short_name": "Repositor",
-    "version": "2.0.1.68 (build:20251602.68)",
+    "version": "2.0.1.74 (build:20252102.74)",
     "start_url": "./index.html",
     "scope": "./",
     "display": "standalone",
