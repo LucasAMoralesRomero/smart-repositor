@@ -5,12 +5,14 @@ const urlsToCache = [
   './',
   './index.html',
   './manifest.json',
+  './js/gondola.js',
   './js/script.js',
   './js/version.js',
   './js/registerSW.js',
   './icons/smart-repositor-32-32.png',
   './icons/smart-repositor-128-128.png',
   './icons/smart-repositor-512-512.png',
+  './pages/gondolas.html',
   'https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css',
   'https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js'
 ];
