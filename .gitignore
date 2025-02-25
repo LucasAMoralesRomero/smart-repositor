@@ -38,3 +38,5 @@ build/
 # Ignorar dependencias instaladas globalmente en Playwright
 **/node_modules/.cache/
 **/node_modules/.bin/
+# Ignorar archivo de configuraciones
+**/config/config.js
