@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Gestión de Góndolas + Búsqueda de PLU</title>
+  <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+    rel="stylesheet"
+  />
+</head>
+<body>
+  <div class="container mt-5">
+    <h1 class="mb-4">Gestión de Góndolas</h1>
+
+    <!-- Formulario para agregar góndola -->
+    <div class="card mb-3">
+      <div class="card-body">
+        <h5 class="card-title">Agregar Góndola</h5>
+        <input
+          type="text"
+          id="nombreGondola"
+          class="form-control mb-2"
+          placeholder="Nombre de la góndola"
+        />
+        <button class="btn btn-primary" onclick="agregarGondola()">
+          Agregar Góndola
+        </button>
+      </div>
+    </div>
+
+    <!-- Formulario para buscar producto por PLU y agregarlo a la góndola -->
+    <div class="card mt-3">
+      <div class="card-body">
+        <h5 class="card-title">Buscar Producto y Agregar a Góndola</h5>
+        
+        <!-- 1) Elegir góndola -->
+        <select id="selectGondolaProducto" class="form-select mb-2">
+          <!-- Se rellenará dinámicamente con las góndolas -->
+        </select>
+
+        <!-- 2) Ingresar PLU -->
+        <input
+          type="text"
+          id="pluProducto"
+          class="form-control mb-2"
+          placeholder="PLU del producto (ej. 001234)"
+        />
+
+        <!-- 3) Mostrar el nombre (viene desde servidor) -->
+        <input
+          type="text"
+          id="nombreProducto"
+          class="form-control mb-2"
+          placeholder="Nombre del producto (se completa automáticamente)"
+          readonly
+        />
+
+        <!-- 4) Cantidad -->
+        <input
+          type="number"
+          id="cantidadProducto"
+          class="form-control mb-2"
+          placeholder="Cantidad a agregar"
+        />
+
+        <!-- 5) Botón de acción -->
+        <button
+          class="btn btn-success"
+          id="buscarYAgregarBtn"
+          onclick="buscarYAgregarProducto()"
+        >
+          Buscar y Agregar
+        </button>
+      </div>
+    </div>
+
+    <!-- Lista de góndolas -->
+    <h4 class="mt-4">Góndolas Disponibles</h4>
+    <div id="listaGondolas"></div>
+  </div>
+
+  <script src="../js/gondola.js"></script>
+</body>
+</html>
