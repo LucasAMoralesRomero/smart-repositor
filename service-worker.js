@@ -3,16 +3,16 @@
 const CACHE_NAME = 'smart-repositor-v2';
 const urlsToCache = [
   '/',
-  '/index.html',
-  '/manifest.json',
-  '/js/gondola.js',
-  '/js/script.js',
-  '/js/version.js',
-  '/js/registerSW.js',
-  '/icons/smart-repositor-32-32.png',
-  '/icons/smart-repositor-128-128.png',
-  '/icons/smart-repositor-512-512.png',
-  '/pages/gondolas.html',
+  'https://smart-repositor-test.netlify.app/index.html',
+  'https://smart-repositor-test.netlify.app/manifest.json',
+  'https://smart-repositor-test.netlify.app/js/gondola.js',
+  'https://smart-repositor-test.netlify.app/js/script.js',
+  'https://smart-repositor-test.netlify.app/js/version.js',
+  'https://smart-repositor-test.netlify.app/js/registerSW.js',
+  'https://smart-repositor-test.netlify.app/icons/smart-repositor-32-32.png',
+  'https://smart-repositor-test.netlify.app/icons/smart-repositor-128-128.png',
+  'https://smart-repositor-test.netlify.app/icons/smart-repositor-512-512.png',
+  'https://smart-repositor-test.netlify.app/pages/gondolas.html',
   'https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css',
   'https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js'
 ];
