@@ -1,5 +1,3 @@
-// service-worker.js
-
 const CACHE_NAME = 'smart-repositor-v2';
 const urlsToCache = [
   '/',
@@ -17,7 +15,7 @@ const urlsToCache = [
   'https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js'
 ];
 
-//1. Instalación: Cachear archivos
+// Instalación: Cachear archivos
 self.addEventListener('install', (event) => {
   console.log('[Service Worker] Instalando...');
   event.waitUntil(
@@ -29,7 +27,7 @@ self.addEventListener('install', (event) => {
   self.skipWaiting(); // Activa inmediatamente la nueva versión
 });
 
-//2. Activación: Elimina cachés antiguas
+// Activación: Elimina cachés antiguas
 self.addEventListener('activate', (event) => {
   console.log('[Service Worker] Activado');
   event.waitUntil(
@@ -47,29 +45,31 @@ self.addEventListener('activate', (event) => {
   self.clients.claim(); // Aplica el SW inmediatamente
 });
 
-//3. Intercepción de peticiones: Offline Fallback
+// Intercepción de peticiones: Mejora para manejar múltiples páginas y offline fallback
 self.addEventListener('fetch', (event) => {
   event.respondWith(
     caches.match(event.request).then((response) => {
-      // Si está en caché, devuelve desde allí
+      // Devuelve desde caché si está disponible
       if (response) {
         return response;
       }
-
-      // Si es una solicitud de página y no hay red, muestra el index.html
-      if (event.request.mode === 'navigate') {
-        return caches.match('./index.html');
-      }
-
-      // Si no está en caché y es otro recurso, intenta desde la red
+      // Intenta la solicitud desde la red si no está en caché
       return fetch(event.request).catch(() => {
-        return new Response('Sin conexión y recurso no encontrado en caché.');
+        // Muestra index.html si es una solicitud de navegación y la red falla
+        if (event.request.mode === 'navigate') {
+          return caches.match('/index.html');
+        }
+        // Retorna una respuesta de error si es necesario
+        return new Response('Sin conexión y recurso no encontrado en caché.', {
+          status: 404,
+          statusText: 'Sin conexión y recurso no encontrado en caché.'
+        });
       });
     })
   );
 });
 
-//4. Actualización automática: Escuchar el mensaje 'SKIP_WAITING'
+// Escuchar el mensaje 'SKIP_WAITING'
 self.addEventListener('message', (event) => {
   if (event.data === 'SKIP_WAITING') {
     self.skipWaiting();
